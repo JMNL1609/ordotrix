@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ordotrix — Quick fixes for broken layouts &amp; text encoding</title>
+<meta name="description" content="Fast, fixed-price fixes for broken responsive layouts, forms, and mangled UTF-8/Spanish encoding issues. Delivered in 24h.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#FAFAF8;
+    --ink:#1C2024;
+    --ink-soft:#565D63;
+    --line:#D7DAD4;
+    --accent:#2F6F5E;
+    --accent-soft:#E4EEEA;
+    --surface:#FFFFFF;
+    --bad:#B3453B;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:
+      linear-gradient(var(--bg) 0%, var(--bg) 100%),
+      repeating-linear-gradient(0deg, rgba(28,32,36,0.035) 0 1px, transparent 1px 32px),
+      repeating-linear-gradient(90deg, rgba(28,32,36,0.035) 0 1px, transparent 1px 32px);
+    color:var(--ink);
+    font-family:'IBM Plex Sans', Arial, sans-serif;
+    font-size:16px;
+    line-height:1.55;
+  }
+  .wrap{
+    max-width:760px;
+    margin:0 auto;
+    padding:0 24px;
+  }
+  header.top{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:28px 0;
+    border-bottom:1px solid var(--line);
+  }
+  .brand{
+    font-family:'Space Grotesk', sans-serif;
+    font-weight:700;
+    font-size:20px;
+    letter-spacing:-0.01em;
+  }
+  .brand span{ color:var(--accent); }
+  nav a{
+    color:var(--ink-soft);
+    text-decoration:none;
+    font-size:14px;
+    margin-left:20px;
+  }
+  nav a:hover{ color:var(--ink); }
+
+  /* Hero */
+  .hero{ padding:64px 0 48px; border-bottom:1px solid var(--line); }
+  .hero h1{
+    font-family:'Space Grotesk', sans-serif;
+    font-weight:600;
+    font-size:clamp(32px, 5vw, 44px);
+    line-height:1.15;
+    letter-spacing:-0.01em;
+    margin:0 0 20px;
+    max-width:15ch;
+  }
+  .hero p{
+    color:var(--ink-soft);
+    font-size:17px;
+    max-width:52ch;
+    margin:0 0 28px;
+  }
+  .tagrow{ display:flex; gap:10px; flex-wrap:wrap; margin-bottom:8px; }
+  .tag{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12.5px;
+    color:var(--accent);
+    background:var(--accent-soft);
+    border:1px solid #cfe3db;
+    padding:4px 10px;
+    border-radius:3px;
+  }
+  .cta{
+    display:inline-block;
+    margin-top:12px;
+    background:var(--ink);
+    color:#fff;
+    text-decoration:none;
+    font-size:15px;
+    font-weight:500;
+    padding:12px 20px;
+    border-radius:4px;
+  }
+  .cta:hover{ background:var(--accent); }
+
+  /* Services — ledger style, not identical cards */
+  .services{ padding:48px 0; border-bottom:1px solid var(--line); }
+  .section-label{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:13px;
+    color:var(--ink-soft);
+    margin:0 0 20px;
+  }
+  .ledger{ border-top:1px solid var(--line); }
+  .row{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    gap:24px;
+    padding:20px 0;
+    border-bottom:1px solid var(--line);
+  }
+  .row .left h3{
+    font-family:'Space Grotesk', sans-serif;
+    font-size:18px;
+    margin:0 0 6px;
+    font-weight:600;
+  }
+  .row .left p{
+    color:var(--ink-soft);
+    font-size:14.5px;
+    margin:0;
+    max-width:48ch;
+  }
+  .row .right{
+    text-align:right;
+    flex-shrink:0;
+  }
+  .price{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:20px;
+    font-weight:500;
+  }
+  .turnaround{
+    display:block;
+    color:var(--ink-soft);
+    font-size:12.5px;
+    margin-top:4px;
+  }
+
+  /* Proof section */
+  .proof{ padding:48px 0; border-bottom:1px solid var(--line); }
+  .demo{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:6px;
+    padding:20px;
+    margin-bottom:16px;
+  }
+  .demo h4{
+    font-family:'Space Grotesk', sans-serif;
+    font-size:15px;
+    margin:0 0 12px;
+    font-weight:600;
+  }
+  .before-after{ display:flex; gap:16px; flex-wrap:wrap; }
+  .col{ flex:1; min-width:220px; }
+  .col .label{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11.5px;
+    margin-bottom:6px;
+  }
+  .col.bad .label{ color:var(--bad); }
+  .col.good .label{ color:var(--accent); }
+  .code-box{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:13px;
+    background:#F3F3F0;
+    border:1px solid var(--line);
+    border-radius:4px;
+    padding:10px 12px;
+    white-space:pre-wrap;
+    line-height:1.5;
+  }
+  .col.bad .code-box{ color:var(--bad); }
+  .col.good .code-box{ color:var(--ink); }
+
+  /* Contact */
+  .contact{ padding:48px 0 72px; }
+  .contact h2{
+    font-family:'Space Grotesk', sans-serif;
+    font-size:24px;
+    margin:0 0 12px;
+    font-weight:600;
+  }
+  .contact p{ color:var(--ink-soft); margin:0 0 20px; max-width:50ch; }
+  .contact-list{ display:flex; flex-direction:column; gap:8px; font-size:15px; }
+  .contact-list a{ color:var(--ink); }
+
+  footer{
+    border-top:1px solid var(--line);
+    padding:20px 0 40px;
+    color:var(--ink-soft);
+    font-size:13px;
+  }
+
+  @media (max-width:520px){
+    .row{ flex-direction:column; }
+    .row .right{ text-align:left; }
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header class="top">
+    <div class="brand">Ordo<span>trix</span></div>
+    <nav>
+      <a href="#services">Services</a>
+      <a href="#proof">Recent fixes</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <div class="tagrow">
+      <span class="tag">delivered in 24h</span>
+      <span class="tag">fixed price</span>
+      <span class="tag">EN / ES</span>
+    </div>
+    <h1>Broken layouts and mangled text, put back in order.</h1>
+    <p>I fix small, specific problems fast: responsive layouts that break on mobile, forms that silently fail, and the classic Spanish-encoding mess (Ã±, Ã­) in databases, APIs, and automated emails.</p>
+    <a class="cta" href="#contact">Send me the issue</a>
+  </section>
+
+  <section class="services" id="services">
+    <p class="section-label">What I fix, and what it costs</p>
+    <div class="ledger">
+      <div class="row">
+        <div class="left">
+          <h3>Layout &amp; responsive fix</h3>
+          <p>Elements overlapping or breaking on mobile, Flexbox/Grid issues, menus that collapse wrong.</p>
+        </div>
+        <div class="right">
+          <div class="price">$15</div>
+          <span class="turnaround">within 24h</span>
+        </div>
+      </div>
+      <div class="row">
+        <div class="left">
+          <h3>Form fix</h3>
+          <p>Contact forms that don't send, validation that silently fails, broken POST handling.</p>
+        </div>
+        <div class="right">
+          <div class="price">$15–20</div>
+          <span class="turnaround">within 24h</span>
+        </div>
+      </div>
+      <div class="row">
+        <div class="left">
+          <h3>Encoding &amp; script debugging</h3>
+          <p>Corrupted Spanish characters (Ã±, Ã­), broken scripts, small bugs in JS/Python/PHP.</p>
+        </div>
+        <div class="right">
+          <div class="price">$30</div>
+          <span class="turnaround">within 24h</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="proof" id="proof">
+    <p class="section-label">Recent fixes</p>
+
+    <div class="demo">
+      <h4>Mobile layout, before and after</h4>
+      <div class="before-after">
+        <div class="col bad">
+          <div class="label">before</div>
+          <div class="code-box">.card &#123;
+  display: block;
+&#125;
+img &#123; float: left; &#125;
+.price &#123; position: absolute;
+  right: -30px; &#125;</div>
+        </div>
+        <div class="col good">
+          <div class="label">after</div>
+          <div class="code-box">.card &#123;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+&#125;
+img &#123; max-width: 100%; &#125;</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="demo">
+      <h4>Spanish encoding, before and after</h4>
+      <div class="before-after">
+        <div class="col bad">
+          <div class="label">before</div>
+          <div class="code-box">Estimado clienteÃ­, su pedido
+serÃ¡ enviado maÃ±ana.</div>
+        </div>
+        <div class="col good">
+          <div class="label">after</div>
+          <div class="code-box">Estimado cliente, su pedido
+será enviado mañana.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="contact" id="contact">
+    <h2>Tell me what's broken</h2>
+    <p>Send a screenshot or a code snippet. I'll tell you if it's a quick fix before you pay anything.</p>
+    <div class="contact-list">
+      <div>Email: <a href="mailto:REEMPLAZAR@correo.com">REEMPLAZAR@correo.com</a></div>
+      <div>Reddit: <a href="https://reddit.com/user/REEMPLAZAR" target="_blank" rel="noopener">u/REEMPLAZAR</a></div>
+    </div>
+  </section>
+
+  <footer>
+    Ordotrix — fixed-price fixes, no back-and-forth quotes.
+  </footer>
+</div>
+
+</body>
+</html>
